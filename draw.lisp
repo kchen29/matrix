@@ -38,4 +38,5 @@
   "Adds a line from point '(x0 y0 z0) to '(x1 y1 z1)")
 
 (defun add-point (matrix x y &optional (z 0))
-  "Adds a point '(x y z) onto MATRIX")
+  "Adds a point '(x y z) onto MATRIX"
+  )
