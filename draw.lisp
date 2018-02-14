@@ -32,11 +32,12 @@
             (draw-line-base x0 y0 x1 (- y0 ydif) x (- (* 2 y0) y))))))
 
 (defun draw-lines (matrix screen color)
-  "Draws the lines from MATIX onto SCREEN with COLOR")
+  "Draws the lines from MATRIX onto SCREEN with COLOR.")
 
 (defun add-edge (matrix x0 y0 z0 x1 y1 z1)
-  "Adds a line from point '(x0 y0 z0) to '(x1 y1 z1)")
+  "Adds a line from point '(x0 y0 z0) to '(x1 y1 z1).")
 
 (defun add-point (matrix x y &optional (z 0))
-  "Adds a point '(x y z) onto MATRIX"
+  "Adds a point '(x y z) onto MATRIX.
+   Appends the point as a column"
   )
