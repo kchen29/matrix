@@ -42,12 +42,12 @@
                screen color)))
 
 (defun add-edge (matrix x0 y0 z0 x1 y1 z1)
-  "Adds a line from point '(x0 y0 z0) to '(x1 y1 z1)."
+  "Adds a line from point (x0 y0 z0) to (x1 y1 z1)."
   (add-point matrix x0 y0 z0)
   (add-point matrix x1 y1 z1))
 
 (defun add-point (matrix x y &optional (z 0))
-  "Adds a point '(x y z) onto MATRIX.
+  "Adds a point (x y z) onto MATRIX.
    Appends the point as a column"
   (adjust-array matrix (list (array-dimension matrix 0)
                              (1+ (array-dimension matrix 1))))

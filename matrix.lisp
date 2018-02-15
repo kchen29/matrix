@@ -2,17 +2,17 @@
   (load "display"))
 
 (defun print-matrix (matrix)
-  "Prints out MATRIX to *standard-out*"
-  (format t "~{~%~{~a ~}~}~%" (matrix-to-list matrix)))
+  "Prints out MATRIX to *standard-output*."
+  (format t "~{~%~{~a~4,4T~}~}~%" (matrix-to-list matrix)))
 
 (defun matrix-to-list (matrix)
-  "Turns MATRIX into a list"
+  "Turns MATRIX into a list."
   (loop for x below (array-dimension matrix 0)
      collect (loop for y below (array-dimension matrix 1)
                 collect (aref matrix x y))))
                         
 (defun to-identity (matrix)
-  "Turns MATRIX into an identity matrix"
+  "Turns MATRIX into an identity matrix."
   (dotimes (x (array-dimension matrix 0))
     (dotimes (y (array-dimension matrix 1))
       (if (= x y)
@@ -35,4 +35,5 @@
        sum (* (aref m1 row i) (aref m2 i col))))
 
 (defun make-matrix (&optional (rows 4) (cols 4))
+  "Makes a matrix with ROWS and COLS"
   (make-array (list rows cols) :adjustable t))
