@@ -1,6 +1,9 @@
+(eval-when (:compile-toplevel :load-toplevel)
+  (load "display"))
+
 (defun print-matrix (matrix)
   "Prints out MATRIX to *standard-out*"
-  (format t "~{~%~{~a ~}~}" (matrix-to-list matrix)))
+  (format t "~{~%~{~a ~}~}~%" (matrix-to-list matrix)))
 
 (defun matrix-to-list (matrix)
   "Turns MATRIX into a list"

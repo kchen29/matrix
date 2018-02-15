@@ -1,5 +1,5 @@
 (eval-when (:compile-toplevel :load-toplevel)
-  (load "display"))
+  (load "matrix"))
 
 (defmacro draw-line-base (x0 y0 x1 y1 plot-1 plot-2)
   "Base code for octant 1. Other octants can be gotten from transformations."
@@ -32,12 +32,28 @@
             (draw-line-base x0 y0 x1 (- y0 ydif) x (- (* 2 y0) y))))))
 
 (defun draw-lines (matrix screen color)
-  "Draws the lines from MATRIX onto SCREEN with COLOR.")
+  "Draws the lines from MATRIX onto SCREEN with COLOR."
+  (do ((index 0 (+ 2 index)))
+      ((>= index (array-dimension matrix 1)))
+    (draw-line (aref matrix 0 index)
+               (aref matrix 1 index)
+               (aref matrix 0 (1+ index))
+               (aref matrix 1 (1+ index))
+               screen color)))
 
 (defun add-edge (matrix x0 y0 z0 x1 y1 z1)
-  "Adds a line from point '(x0 y0 z0) to '(x1 y1 z1).")
+  "Adds a line from point '(x0 y0 z0) to '(x1 y1 z1)."
+  (add-point matrix x0 y0 z0)
+  (add-point matrix x1 y1 z1))
 
 (defun add-point (matrix x y &optional (z 0))
   "Adds a point '(x y z) onto MATRIX.
    Appends the point as a column"
-  )
+  (adjust-array matrix (list (array-dimension matrix 0)
+                             (1+ (array-dimension matrix 1))))
+  (let ((end (1- (array-dimension matrix 1))))
+    (setf (aref matrix 0 end) x)
+    (setf (aref matrix 1 end) y)
+    (setf (aref matrix 2 end) z)
+    (setf (aref matrix 3 end) 1)))
+  

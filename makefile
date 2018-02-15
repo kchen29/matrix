@@ -4,9 +4,11 @@ all: main.fasl
 %.fasl:
 	sbcl --non-interactive --eval '(compile-file "$*.lisp")' > /dev/null
 
-main.fasl: main.lisp draw.fasl display.fasl
+main.fasl: main.lisp draw.fasl matrix.fasl display.fasl
 
-draw.fasl: draw.lisp display.fasl
+draw.fasl: draw.lisp matrix.fasl display.fasl
+
+matrix.fasl: matrix.lisp display.fasl
 
 display.fasl: display.lisp
 

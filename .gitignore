@@ -1,3 +1,7 @@
+*~
+*.ppm
+*.png
+
 *.FASL
 *.fasl
 *.lisp-temp
