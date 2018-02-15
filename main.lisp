@@ -41,24 +41,45 @@
                                   ,(first edge) ,(second edge) 0
                                   ,(third edge) ,(fourth edge) 0))))
 
+(defmacro clear-add-draw (matrix edges screen color)
+  "Clear the matrix, add edges, then draw with the color"
+  `(progn (clear-matrix ,matrix)
+          (add-edges ,matrix ,edges)
+          (draw-lines ,matrix ,screen ,color)))
+  
 (defun main (a-size filename)
   "Make fancy image, making an A-SIZE by A-SIZE image. Outputs to FILENAME."
   (let* ((dimensions (list a-size a-size))
          (half (/ a-size 2))
          (full (1- a-size))
          (screen (make-array dimensions :initial-element '(0 0 0)))
-         (color '(0 255 0))
          (edges (make-matrix 4 0))
          (transform (make-matrix)))
     ;;make transform rotate 22.5 degrees from the point (250, 250)
+    ;;have it be identity now
     (to-identity transform)
-    
-    (add-edges edges ((0 0 full full)
-                      (0 0 full half)
-                      (full full 0 half)))
-  
-    (draw-lines edges screen color)
 
+    (clear-add-draw edges ((0 0 full full)
+                           (0 0 full half)
+                           (full full 0 half))
+                    screen '(0 255 0))
+
+    (clear-add-draw edges ((0 full full 0)
+                           (0 full full half)
+                           (full 0 0 half))
+                    screen '(0 255 255))
+
+    (clear-add-draw edges ((0 0 half full)
+                           (full full half 0))
+                    screen '(255 0 0))
+
+    (clear-add-draw edges ((0 full half 0)
+                           (full 0 half full))
+                    screen '(255 0 255))
+
+    (clear-add-draw edges ((0 half full half)
+                           (half 0 half full))
+                    screen '(255 255 0))
     
     (write-ppm filename dimensions screen)
     (display filename)))

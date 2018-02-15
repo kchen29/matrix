@@ -37,3 +37,7 @@
 (defun make-matrix (&optional (rows 4) (cols 4))
   "Makes a matrix with ROWS and COLS"
   (make-array (list rows cols) :adjustable t))
+
+(defun clear-matrix (matrix)
+  "Adjusts size to zero. Really shouldn't be used."
+  (adjust-array matrix '(4 0)))
