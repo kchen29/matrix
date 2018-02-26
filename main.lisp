@@ -26,26 +26,27 @@
     (print-matrix edge-list)))
 
 
-(defun draw-transform-draw (transform edge-list screen color)
-  (draw-lines edge-list screen color)
-  (setf edge-list (matrix-multiply transform edge-list))
-  (draw-lines edge-list screen color))
+(defun draw-transform-draw (matrix transform screen color)
+  "Draws the MATRIX, does a TRANSFORM, then draws again."
+  (draw-lines matrix screen color)
+  (matrix-multiply transform matrix)
+  (draw-lines matrix screen color))
 
 (defmacro add-edges (matrix edges)
-  "Add multiple edges to the matrix."
+  "Add multiple EDGES to the MATRIX."
   `(progn ,@(loop for edge in edges
                collect `(add-edge ,matrix
                                   ,(first edge) ,(second edge) 0
                                   ,(third edge) ,(fourth edge) 0))))
 
-(defmacro clear-add-draw (matrix edges screen color)
-  "Clear the matrix, add edges, then draw with the color"
+(defmacro clear-add-draw (matrix edges transform screen color)
+  "Clear the MATRIX, add EDGES, then draw with TRANSFORM."
   `(progn (clear-matrix ,matrix)
           (add-edges ,matrix ,edges)
-          (draw-lines ,matrix ,screen ,color)))
+          (draw-transform-draw ,matrix ,transform ,screen ,color)))
   
 (defun main (a-size filename)
-  "Make fancy image, making an A-SIZE by A-SIZE image. Outputs to FILENAME."
+  "Make fancy A-SIZE by A-SIZE image. Outputs to FILENAME."
   (let* ((dimensions (list a-size a-size))
          (half (/ a-size 2))
          (full (1- a-size))
@@ -59,24 +60,24 @@
     (clear-add-draw edges ((0 0 full full)
                            (0 0 full half)
                            (full full 0 half))
-                    screen '(0 255 0))
+                    transform screen '(0 255 0))
 
     (clear-add-draw edges ((0 full full 0)
                            (0 full full half)
                            (full 0 0 half))
-                    screen '(0 255 255))
+                    transform screen '(0 255 255))
 
     (clear-add-draw edges ((0 0 half full)
                            (full full half 0))
-                    screen '(255 0 0))
+                    transform screen '(255 0 0))
 
     (clear-add-draw edges ((0 full half 0)
                            (full 0 half full))
-                    screen '(255 0 255))
+                    transform screen '(255 0 255))
 
     (clear-add-draw edges ((0 half full half)
                            (half 0 half full))
-                    screen '(255 255 0))
+                    transform screen '(255 255 0))
     
     (write-ppm filename dimensions screen)
     (display filename)))

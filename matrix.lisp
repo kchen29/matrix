@@ -16,15 +16,19 @@
           (setf (aref matrix x y) 1)
           (setf (aref matrix x y) 0)))))
 
-(defun matrix-multiply (m1 m2)
+(defun matrix-multiply-fun (m1 m2)
   "A general matrix multiplication routine.
    Multiplies M1 with M2. Does not modify either (for now?)."
   (let ((m3 (make-matrix (array-dimension m1 0) (array-dimension m2 1))))
-    (dotimes (row (array-dimension m1 0))
+    (dotimes (row (array-dimension m1 0) m3)
       (dotimes (col (array-dimension m2 1))
-        (setf (aref m3 row col) (dot row col m1 m2))))
-    m3))
+        (setf (aref m3 row col) (dot row col m1 m2))))))
 
+(defmacro matrix-multiply (m1 m2)
+  "Since matrix-multiply-fun does not modify, modify with a macro
+   (saves copying over)."
+  `(setf ,m2 (matrix-multiply-fun ,m1 ,m2)))
+    
 (defun dot (row col m1 m2)
   "Dots the ROW of M1 with the COL of M2. 
    They should have the same corresponding sizes."
@@ -36,5 +40,5 @@
   (make-array (list rows cols) :adjustable t))
 
 (defun clear-matrix (matrix)
-  "Adjusts size to zero. Really shouldn't be used."
+  "Adjusts size to zero."
   (adjust-array matrix '(4 0)))
