@@ -1,6 +1,3 @@
-(eval-when (:compile-toplevel :load-toplevel)
-  (load "draw"))
-
 (defun main-test ()
   "Tests matrix stuff."
   (let ((edge-list (make-matrix 4 0))
@@ -84,6 +81,6 @@
     (write-ppm filename dimensions screen)
     (display filename)))
 
-(main-test)
-(main 500 "output.ppm")
+;(main-test)
+;(main 500 "output.ppm")
 
