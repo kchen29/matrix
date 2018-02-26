@@ -79,7 +79,8 @@
          (screen (make-array dimensions :initial-element '(0 0 0)))
          (matrix (make-matrix 4 0))
          (transform (make-matrix)))
-    ;;make transform rotate 22.5 degrees from the point (250, 250), and dilate by a small factor (fill the screen)
+    ;;make transform rotate 22.5 degrees from the point (250, 250),
+    ;;and dilate by a small factor (fill the screen)
     (to-identity transform)
     (translate -250 -250 transform)
     (rotate (/ (* 22.5 pi) 180) transform)
