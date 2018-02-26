@@ -44,7 +44,33 @@
   `(progn (clear-matrix ,matrix)
           (add-edges ,matrix ,edges)
           (draw-transform-draw ,matrix ,transform ,screen ,color)))
-  
+
+(defun translate (delx dely matrix)
+  "Translates MATRIX by DELX and DELY"
+  (let ((transform (make-matrix)))
+    (to-identity transform)
+    (setf (aref transform 0 3) delx)
+    (setf (aref transform 1 3) dely)
+    (matrix-multiply transform matrix)))
+
+(defun rotate (radians matrix)
+  "Rotates MATRIX by RADIANS counter-clockwise"
+  (let ((transform (make-matrix)))
+    (to-identity transform)
+    (setf (aref transform 0 0) (cos radians)
+          (aref transform 0 1) (- 0 (sin radians))
+          (aref transform 1 0) (sin radians)
+          (aref transform 1 1) (cos radians))
+    (matrix-multiply transform matrix)))
+
+(defun dilate (factor matrix)
+  "Dilates MATRIX by FACTOR"
+  (let ((transform (make-matrix)))
+    (to-identity transform)
+    (setf (aref transform 0 0) factor)
+    (setf (aref transform 1 1) factor)
+    (matrix-multiply transform matrix)))
+
 (defun main (a-size filename)
   "Make fancy A-SIZE by A-SIZE image. Outputs to FILENAME."
   (let* ((dimensions (list a-size a-size))
@@ -53,10 +79,13 @@
          (screen (make-array dimensions :initial-element '(0 0 0)))
          (edges (make-matrix 4 0))
          (transform (make-matrix)))
-    ;;make transform rotate 22.5 degrees from the point (250, 250)
-    ;;have it be identity now
+    ;;make transform rotate 22.5 degrees from the point (250, 250), and dilate by a small factor
     (to-identity transform)
-
+    (translate -250 -250 transform)
+    (rotate (/ (* 22.5 pi) 180) transform)
+    (dilate 1.0824 transform)
+    (translate 250 250 transform)
+    
     (clear-add-draw edges ((0 0 full full)
                            (0 0 full half)
                            (full full 0 half))
@@ -81,7 +110,3 @@
     
     (write-ppm filename dimensions screen)
     (display filename)))
-
-;(main-test)
-;(main 500 "output.ppm")
-

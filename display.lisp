@@ -15,8 +15,10 @@
 
 (defun plot (x y screen color)
   "Plots (x, y) on the 2D array SCREEN with COLOR.
-   COLOR is not copied."
-  (setf (aref screen x y) color))
+   Floors x and y. Checks bounds. COLOR is not copied."
+  (setf x (floor x) y (floor y))
+  (when (and (< -1 x (array-dimension screen 0)) (< -1 y (array-dimension screen 1)))
+    (setf (aref screen x y) color)))
 
 (defun display (filename)
   "Displays the image with FILENAME.
