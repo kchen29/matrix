@@ -49,8 +49,8 @@
   "Translates MATRIX by DELX and DELY"
   (let ((transform (make-matrix)))
     (to-identity transform)
-    (setf (aref transform 0 3) delx)
-    (setf (aref transform 1 3) dely)
+    (setf (aref transform 0 3) delx
+          (aref transform 1 3) dely)
     (matrix-multiply transform matrix)))
 
 (defun rotate (radians matrix)
@@ -67,8 +67,8 @@
   "Dilates MATRIX by FACTOR"
   (let ((transform (make-matrix)))
     (to-identity transform)
-    (setf (aref transform 0 0) factor)
-    (setf (aref transform 1 1) factor)
+    (setf (aref transform 0 0) factor
+          (aref transform 1 1) factor)
     (matrix-multiply transform matrix)))
 
 (defun main (a-size filename)
@@ -77,34 +77,34 @@
          (half (/ a-size 2))
          (full (1- a-size))
          (screen (make-array dimensions :initial-element '(0 0 0)))
-         (edges (make-matrix 4 0))
+         (matrix (make-matrix 4 0))
          (transform (make-matrix)))
-    ;;make transform rotate 22.5 degrees from the point (250, 250), and dilate by a small factor
+    ;;make transform rotate 22.5 degrees from the point (250, 250), and dilate by a small factor (fill the screen)
     (to-identity transform)
     (translate -250 -250 transform)
     (rotate (/ (* 22.5 pi) 180) transform)
     (dilate 1.0824 transform)
     (translate 250 250 transform)
     
-    (clear-add-draw edges ((0 0 full full)
+    (clear-add-draw matrix ((0 0 full full)
                            (0 0 full half)
                            (full full 0 half))
                     transform screen '(0 255 0))
 
-    (clear-add-draw edges ((0 full full 0)
+    (clear-add-draw matrix ((0 full full 0)
                            (0 full full half)
                            (full 0 0 half))
                     transform screen '(0 255 255))
 
-    (clear-add-draw edges ((0 0 half full)
+    (clear-add-draw matrix ((0 0 half full)
                            (full full half 0))
                     transform screen '(255 0 0))
 
-    (clear-add-draw edges ((0 full half 0)
+    (clear-add-draw matrix ((0 full half 0)
                            (full 0 half full))
                     transform screen '(255 0 255))
 
-    (clear-add-draw edges ((0 half full half)
+    (clear-add-draw matrix ((0 half full half)
                            (half 0 half full))
                     transform screen '(255 255 0))
     

@@ -49,8 +49,8 @@
   (adjust-array matrix (list (array-dimension matrix 0)
                              (1+ (array-dimension matrix 1))))
   (let ((end (1- (array-dimension matrix 1))))
-    (setf (aref matrix 0 end) x)
-    (setf (aref matrix 1 end) y)
-    (setf (aref matrix 2 end) z)
-    (setf (aref matrix 3 end) 1)))
+    (setf (aref matrix 0 end) x
+          (aref matrix 1 end) y
+          (aref matrix 2 end) z
+          (aref matrix 3 end) 1)))
   
