@@ -1,12 +1,12 @@
-objects := display.lisp matrix.lisp draw.lisp main.lisp
-compile-lisps := --eval '(progn $(foreach file,$(objects),(compile-file "$(file)")))'
-load-fasls := $(foreach file,$(objects),--load "$(subst lisp,fasl,$(file))")
+system := "matrix"
+asdf := (asdf:initialize-source-registry (quote (:source-registry :ignore-inherited-configuration \
+					    (:directory "$(CURDIR)/")))) \
+	(asdf:load-system $(system)) \
+	(in-package :main)
+main := (main-test) (main 500 "output.ppm")
 
-all: main.fasl
-	sbcl --noinform --non-interactive $(load-fasls) --eval '(progn (main-test) (main 500 "output.ppm"))'
-
-main.fasl: $(objects)
-	sbcl --non-interactive $(compile-lisps) > /dev/null
+all:
+	sbcl --noinform --non-interactive --eval '(require :asdf)' --eval '(progn $(asdf))' --eval '(progn $(main))'
 
 clean:
 	rm -f *~ *.fasl *.ppm
